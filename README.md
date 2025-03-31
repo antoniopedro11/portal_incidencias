@@ -14,6 +14,8 @@ Um sistema moderno e eficiente para registro e acompanhamento de incidências, d
 - ✅ Design moderno com Tailwind CSS
 - ✅ Modo claro/escuro conforme preferência do usuário
 - ✅ Progressive Web App (PWA) para uso offline e instalação
+- ✅ **Classificação Automática de Incidências com IA**
+- ✅ **Assistente Virtual alimentado por Inteligência Artificial**
 
 ## Tecnologias Utilizadas
 
@@ -24,6 +26,7 @@ Um sistema moderno e eficiente para registro e acompanhamento de incidências, d
 - [React Hook Form](https://react-hook-form.com/) - Gerenciamento de formulários
 - [Zod](https://github.com/colinhacks/zod) - Validação de esquemas
 - [Lucide React](https://lucide.dev/) - Ícones bonitos e consistentes
+- [OpenAI API](https://openai.com/blog/openai-api) - Integração com IA para classificação e assistência
 
 ## Pré-requisitos
 
@@ -31,6 +34,7 @@ Antes de começar, verifique se você tem o seguinte instalado em seu sistema:
 
 - Node.js (versão 18.x ou superior)
 - npm (versão 9.x ou superior) ou yarn (versão 1.22.x ou superior)
+- Chave de API da OpenAI (para os recursos de IA)
 
 ## Como Iniciar
 
@@ -49,7 +53,23 @@ npm install
 yarn install
 ```
 
-3. **Execute o servidor de desenvolvimento:**
+3. **Configure as variáveis de ambiente:**
+
+Crie um arquivo `.env.local` na raiz do projeto e adicione:
+
+```
+# Prisma
+DATABASE_URL="file:./dev.db"
+
+# NextAuth
+NEXTAUTH_SECRET="seu-segredo-aqui"
+NEXTAUTH_URL="http://localhost:3000"
+
+# OpenAI
+OPENAI_API_KEY="sua-chave-api-openai"
+```
+
+4. **Execute o servidor de desenvolvimento:**
 
 ```bash
 npm run dev
@@ -57,9 +77,36 @@ npm run dev
 yarn dev
 ```
 
-4. **Acesse a aplicação:**
+5. **Acesse a aplicação:**
 
 Abra seu navegador e acesse [http://localhost:3000](http://localhost:3000).
+
+## Recursos de Inteligência Artificial
+
+O Portal de Incidências incorpora dois recursos principais de IA:
+
+### Classificação Automática de Incidências
+
+Ao criar uma nova incidência, o sistema pode analisar automaticamente o título e a descrição para sugerir:
+
+- **Categoria** mais adequada para o problema
+- **Prioridade** recomendada
+- **Tempo estimado** para resolução
+- **Palavras-chave** relacionadas ao problema
+- **Departamento** mais indicado para lidar com a questão
+
+Este recurso ajuda a padronizar o registro de incidências e direcionar os problemas de forma eficiente para as equipes corretas.
+
+### Assistente Virtual
+
+Um chatbot inteligente disponível em todas as páginas do portal que:
+
+- Responde perguntas sobre como usar o sistema
+- Auxilia na compreensão dos estados e prioridades das incidências
+- Fornece orientações sobre boas práticas de registro de problemas
+- Ajuda usuários a encontrar recursos e funcionalidades
+
+O assistente é acessível através de um ícone flutuante no canto inferior direito da interface.
 
 ## Sistema de Autenticação
 
@@ -79,7 +126,7 @@ O portal conta com um sistema completo de autenticação:
 - **Registro** (`/registro`): Criação de novas contas
 - **Teste de Autenticação** (`/test`): Verificação do status de autenticação
 - **Incidências** (`/incidencias`): Listagem de todas as incidências
-- **Nova Incidência** (`/incidencias/nova`): Formulário para registrar novas incidências
+- **Nova Incidência** (`/incidencias/nova`): Formulário para registrar novas incidências com classificação automática
 - **Detalhes da Incidência** (`/incidencias/[id]`): Visualização completa de uma incidência
 
 ## Modo Claro/Escuro
@@ -109,6 +156,7 @@ portal-incidencias/
 │   ├── app/                # Diretório App Router 
 │   │   ├── api/            # Rotas de API
 │   │   │   ├── auth/       # Endpoints de autenticação
+│   │   │   ├── ia/         # Endpoints de IA
 │   │   │   └── ...         # Outros endpoints
 │   │   ├── incidencias/    # Rotas de incidências
 │   │   ├── login/          # Página de login
@@ -121,8 +169,12 @@ portal-incidencias/
 │   │   ├── Navbar.tsx      # Barra de navegação
 │   │   ├── Footer.tsx      # Rodapé
 │   │   ├── ThemeToggle.tsx # Botão de alternar tema
+│   │   ├── assistente-virtual.tsx # Componente do assistente virtual
 │   │   └── ...             # Outros componentes
 │   └── lib/                # Funções utilitárias e hooks
+│       ├── auth.ts         # Configuração de autenticação
+│       ├── openai.ts       # Funções para integração com a OpenAI
+│       └── ...             # Outros utilitários
 ├── public/                 # Arquivos estáticos
 │   ├── icons/              # Ícones para PWA
 │   ├── manifest.json       # Manifesto para PWA

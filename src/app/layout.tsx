@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import Providers from './providers';
 import Script from 'next/script';
 import { authOptions } from '@/lib/auth';
+import AssistenteVirtual from '@/components/assistente-virtual';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -49,6 +50,7 @@ export default async function RootLayout({
               </main>
               <Footer />
             </div>
+            <AssistenteVirtual />
             <Script
               id="register-sw"
               dangerouslySetInnerHTML={{
