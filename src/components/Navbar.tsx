@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
+import ThemeToggle from './ThemeToggle';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -59,10 +60,14 @@ export default function Navbar() {
                 </Link>
               </>
             )}
+            
+            <ThemeToggle />
           </div>
 
           {/* Botão Mobile */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center space-x-2">
+            <ThemeToggle />
+            
             <button
               onClick={toggleMobileMenu}
               className="text-foreground focus:outline-none"

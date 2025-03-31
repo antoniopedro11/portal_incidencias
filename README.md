@@ -12,6 +12,8 @@ Um sistema moderno e eficiente para registro e acompanhamento de incidências, d
 - ✅ Histórico de alterações
 - ✅ Interface responsiva
 - ✅ Design moderno com Tailwind CSS
+- ✅ Modo claro/escuro conforme preferência do usuário
+- ✅ Progressive Web App (PWA) para uso offline e instalação
 
 ## Tecnologias Utilizadas
 
@@ -80,6 +82,25 @@ O portal conta com um sistema completo de autenticação:
 - **Nova Incidência** (`/incidencias/nova`): Formulário para registrar novas incidências
 - **Detalhes da Incidência** (`/incidencias/[id]`): Visualização completa de uma incidência
 
+## Modo Claro/Escuro
+
+O portal suporta alternância entre os modos claro e escuro:
+
+- Detecção automática da preferência do sistema do usuário
+- Botão de alternância no cabeçalho para troca rápida
+- Persistência da preferência usando localStorage
+- Design adaptativo que se ajusta a ambos os modos
+
+## Progressive Web App (PWA)
+
+O portal funciona como um Progressive Web App, oferecendo:
+
+- Instalação como aplicativo nativo em dispositivos móveis e desktop
+- Funcionalidade offline básica com página de fallback
+- Cache inteligente para recursos importantes
+- Carregamento rápido mesmo em conexões lentas
+- Sincronização automática quando a conexão é restabelecida
+
 ## Estrutura do Projeto
 
 ```
@@ -99,9 +120,14 @@ portal-incidencias/
 │   ├── components/         # Componentes reutilizáveis
 │   │   ├── Navbar.tsx      # Barra de navegação
 │   │   ├── Footer.tsx      # Rodapé
+│   │   ├── ThemeToggle.tsx # Botão de alternar tema
 │   │   └── ...             # Outros componentes
 │   └── lib/                # Funções utilitárias e hooks
 ├── public/                 # Arquivos estáticos
+│   ├── icons/              # Ícones para PWA
+│   ├── manifest.json       # Manifesto para PWA
+│   ├── sw.js               # Service Worker para funcionalidade offline
+│   └── offline.html        # Página de fallback offline
 ├── tailwind.config.js      # Configuração do Tailwind CSS
 ├── next.config.js          # Configuração do Next.js
 ├── postcss.config.js       # Configuração do PostCSS
@@ -119,6 +145,7 @@ O Portal de Incidências apresenta uma interface moderna e intuitiva com:
 - Validação de formulários com mensagens de erro claras
 - Indicadores de carregamento para processos assíncronos
 - Paleta de cores profissional e agradável
+- Suporte para modo claro e escuro
 
 ## Licença
 
