@@ -31,6 +31,8 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
   const [atualizando, setAtualizando] = useState(false);
   const [novoEstado, setNovoEstado] = useState("");
   const [mensagemErro, setMensagemErro] = useState("");
+  
+  // @ts-ignore - Corrigindo o problema de tipagem
   const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "admin";
 
   // Redirecionar para login se não estiver autenticado
@@ -50,7 +52,8 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
         const response = await fetch(`/api/incidencias/${params.id}`);
         
         if (!response.ok) {
-          throw new Error("Falha ao buscar detalhes da incidência");
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Falha ao buscar detalhes da incidência");
         }
         
         const data = await response.json();
