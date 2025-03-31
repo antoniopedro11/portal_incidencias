@@ -30,6 +30,8 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
   const [erro, setErro] = useState("");
   const [atualizando, setAtualizando] = useState(false);
   const [novoEstado, setNovoEstado] = useState("");
+  const [mensagemErro, setMensagemErro] = useState("");
+  const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "admin";
 
   // Redirecionar para login se não estiver autenticado
   useEffect(() => {
@@ -71,6 +73,7 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
     
     try {
       setAtualizando(true);
+      setMensagemErro("");
       const response = await fetch(`/api/incidencias/${params.id}`, {
         method: "PATCH",
         headers: {
@@ -82,7 +85,8 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
       });
       
       if (!response.ok) {
-        throw new Error("Falha ao atualizar incidência");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Falha ao atualizar incidência");
       }
       
       const data = await response.json();
@@ -90,7 +94,7 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
       
     } catch (error) {
       console.error("Erro ao atualizar incidência:", error);
-      setErro(error instanceof Error ? error.message : "Erro ao atualizar incidência");
+      setMensagemErro(error instanceof Error ? error.message : "Erro ao atualizar incidência");
     } finally {
       setAtualizando(false);
     }
@@ -236,29 +240,42 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
               </span>
             </div>
             
-            <div className="mt-4">
-              <label htmlFor="estado" className="block text-sm font-medium mb-2">
-                Atualizar Status
-              </label>
-              <select
-                id="estado"
-                value={novoEstado}
-                onChange={(e) => setNovoEstado(e.target.value)}
-                className="w-full rounded-md border border-input bg-background px-4 py-2"
-              >
-                <option value="Aberta">Aberta</option>
-                <option value="Em análise">Em análise</option>
-                <option value="Resolvida">Resolvida</option>
-              </select>
-            </div>
-            
-            <button
-              onClick={atualizarEstado}
-              disabled={atualizando || novoEstado === incidencia.estado}
-              className="mt-4 w-full bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {atualizando ? "Atualizando..." : "Atualizar Status"}
-            </button>
+            {isAdmin ? (
+              <div className="mt-4">
+                <label htmlFor="estado" className="block text-sm font-medium mb-2">
+                  Atualizar Status
+                </label>
+                <select
+                  id="estado"
+                  value={novoEstado}
+                  onChange={(e) => setNovoEstado(e.target.value)}
+                  className="w-full rounded-md border border-input bg-background px-4 py-2"
+                >
+                  <option value="Aberta">Aberta</option>
+                  <option value="Em análise">Em análise</option>
+                  <option value="Resolvida">Resolvida</option>
+                </select>
+                
+                {mensagemErro && (
+                  <p className="mt-2 text-sm text-red-600">{mensagemErro}</p>
+                )}
+                
+                <button
+                  onClick={atualizarEstado}
+                  disabled={atualizando || novoEstado === incidencia.estado}
+                  className="mt-3 w-full px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground"
+                >
+                  {atualizando ? "Atualizando..." : "Atualizar Status"}
+                </button>
+              </div>
+            ) : (
+              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                <p className="text-sm text-blue-800">
+                  Apenas administradores podem alterar o estado das incidências. 
+                  Entre em contato com um administrador se precisar atualizar o status.
+                </p>
+              </div>
+            )}
           </div>
           
           <div className="bg-card rounded-lg shadow p-6">

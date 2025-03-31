@@ -87,15 +87,31 @@ export async function PATCH(
       );
     }
 
+    // Verificar permissões para atualizar o estado
+    const isAdmin = user.role === "ADMIN" || user.role === "admin";
+    const updateData: any = {
+      titulo: titulo || incidencia.titulo,
+      descricao: descricao || incidencia.descricao,
+      prioridade: prioridade || incidencia.prioridade,
+    };
+    
+    // Apenas administradores podem atualizar o estado da incidência
+    if (estado && estado !== incidencia.estado) {
+      if (!isAdmin) {
+        return NextResponse.json(
+          { error: 'Apenas administradores podem alterar o estado das incidências' },
+          { status: 403 }
+        );
+      }
+      updateData.estado = estado;
+    } else {
+      updateData.estado = incidencia.estado;
+    }
+
     // Atualizar incidência
     const incidenciaAtualizada = await prisma.incidencia.update({
       where: { id },
-      data: {
-        titulo: titulo || incidencia.titulo,
-        descricao: descricao || incidencia.descricao,
-        estado: estado || incidencia.estado,
-        prioridade: prioridade || incidencia.prioridade,
-      },
+      data: updateData,
     });
 
     return NextResponse.json(incidenciaAtualizada);
