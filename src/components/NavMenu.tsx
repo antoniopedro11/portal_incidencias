@@ -9,8 +9,9 @@ import ThemeToggle from "./ThemeToggle";
 
 export default function NavMenu() {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const { status, data: session } = useSession();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const isAdmin = session?.user?.role === "ADMIN";
 
   const isActivePath = (path: string) => {
     if (path === "/") {
@@ -63,6 +64,18 @@ export default function NavMenu() {
               >
                 Nova Incidência
               </Link>
+              {isAdmin && (
+                <Link 
+                  href="/admin" 
+                  className={`px-3 py-2 rounded-md text-sm font-medium ${
+                    isActivePath("/admin") 
+                      ? "bg-primary/10 text-primary" 
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  Painel Admin
+                </Link>
+              )}
             </div>
           </div>
 
@@ -161,6 +174,15 @@ export default function NavMenu() {
                   >
                     Nova Incidência
                   </Link>
+                  {isAdmin && (
+                    <Link 
+                      href="/admin" 
+                      className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted"
+                      role="menuitem"
+                    >
+                      Painel Admin
+                    </Link>
+                  )}
                   <div className="border-t border-border">
                     <button 
                       className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-muted" 
@@ -209,6 +231,18 @@ export default function NavMenu() {
         >
           Nova Incidência
         </Link>
+        {isAdmin && (
+          <Link 
+            href="/admin" 
+            className={`block px-3 py-2 rounded-md text-base font-medium ${
+              isActivePath("/admin") 
+                ? "bg-primary/10 text-primary" 
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            Painel Admin
+          </Link>
+        )}
       </div>
     </nav>
   );
