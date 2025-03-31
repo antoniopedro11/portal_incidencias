@@ -1,223 +1,152 @@
+"use client";
+
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+
 export default function Home() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  // Redirecionar para dashboard se estiver autenticado
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/dashboard");
+    }
+  }, [status, router]);
+
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-b from-primary/10 to-background pt-16 pb-24">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-end mb-4">
-            <div className="flex space-x-2">
-              <a 
-                href="/login" 
-                className="px-4 py-2 text-sm font-medium text-primary hover:text-primary/80 transition-all"
-              >
-                Login
-              </a>
-              <a 
-                href="/registro" 
-                className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-md hover:bg-primary/90 transition-all"
-              >
-                Registrar
-              </a>
-            </div>
+    <div className="flex min-h-screen flex-col">
+      {/* Header */}
+      <header className="border-b bg-card">
+        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+          <div className="flex items-center gap-2">
+            <Image 
+              src="/logo.png" 
+              alt="Portal de Incidências" 
+              width={32} 
+              height={32} 
+              className="rounded-md"
+            />
+            <span className="text-lg font-bold">Portal de Incidências</span>
           </div>
-          <div className="flex flex-col md:flex-row items-center">
-            <div className="md:w-1/2 mb-10 md:mb-0">
-              <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-                Portal de Incidências
-              </h1>
-              <p className="text-xl text-muted-foreground mb-6">
-                Simplifique o gerenciamento de problemas com nossa plataforma intuitiva e eficiente
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a 
-                  href="/incidencias/nova" 
-                  className="px-6 py-3 bg-primary text-primary-foreground rounded-md font-medium shadow-lg hover:bg-primary/90 transition-all"
-                >
-                  Registrar Nova Incidência
-                </a>
-                <a 
-                  href="/incidencias" 
-                  className="px-6 py-3 bg-secondary text-secondary-foreground rounded-md font-medium shadow hover:bg-secondary/90 transition-all"
-                >
-                  Ver Incidências
-                </a>
-              </div>
-            </div>
-            <div className="md:w-1/2 md:pl-10">
-              <div className="bg-background rounded-xl shadow-2xl overflow-hidden">
-                <div className="bg-muted py-3 px-4 border-b">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    <div className="ml-2 text-xs text-muted-foreground">Portal de Incidências</div>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3 p-3 bg-primary/5 rounded-lg">
-                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-medium">1</div>
-                      <div>
-                        <h3 className="font-medium">Problema login</h3>
-                        <p className="text-xs text-muted-foreground">Em análise • Alta prioridade</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
-                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-medium">2</div>
-                      <div>
-                        <h3 className="font-medium">Erro de relatório</h3>
-                        <p className="text-xs text-muted-foreground">Resolvido • Média prioridade</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3 p-3 bg-primary/5 rounded-lg">
-                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-medium">3</div>
-                      <div>
-                        <h3 className="font-medium">Lentidão sistema</h3>
-                        <p className="text-xs text-muted-foreground">Aberto • Baixa prioridade</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="flex items-center gap-4">
+            <Link 
+              href="/login" 
+              className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              Entrar
+            </Link>
+            <Link 
+              href="/registro" 
+              className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+            >
+              Criar conta
+            </Link>
           </div>
         </div>
-      </section>
+      </header>
 
-      {/* Features Section */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Recursos do Portal</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-card rounded-xl p-6 shadow-md hover:shadow-lg transition-all">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Registro Simplificado</h3>
-              <p className="text-muted-foreground">
-                Registre incidências em segundos com nosso formulário otimizado e interface intuitiva.
-              </p>
-            </div>
-            
-            <div className="bg-card rounded-xl p-6 shadow-md hover:shadow-lg transition-all">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Acompanhamento Detalhado</h3>
-              <p className="text-muted-foreground">
-                Histórico completo e comentários para acompanhar cada etapa da resolução.
-              </p>
-            </div>
-            
-            <div className="bg-card rounded-xl p-6 shadow-md hover:shadow-lg transition-all">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Resolução Rápida</h3>
-              <p className="text-muted-foreground">
-                Categorização e priorização automática para resolução eficiente de problemas.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-4">Como Funciona</h2>
-          <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Nosso processo simplificado foi desenhado para tornar o registro e a resolução de incidências mais rápido e eficiente
-          </p>
-          
-          <div className="relative">
-            {/* Linha de conexão */}
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-primary/20 -translate-y-1/2 z-0"></div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-              <div className="bg-card rounded-xl p-6 shadow-md text-center relative">
-                <div className="w-16 h-16 rounded-full bg-primary mx-auto flex items-center justify-center mb-4 shadow-md">
-                  <span className="text-primary-foreground font-bold text-xl">1</span>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Registre a Incidência</h3>
-                <p className="text-muted-foreground">
-                  Preencha o formulário com os detalhes do problema encontrado, incluindo categoria e prioridade.
-                </p>
-              </div>
-              
-              <div className="bg-card rounded-xl p-6 shadow-md text-center relative">
-                <div className="w-16 h-16 rounded-full bg-primary mx-auto flex items-center justify-center mb-4 shadow-md">
-                  <span className="text-primary-foreground font-bold text-xl">2</span>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Acompanhe o Status</h3>
-                <p className="text-muted-foreground">
-                  Receba atualizações, adicione comentários e acompanhe o progresso da resolução da incidência.
-                </p>
-              </div>
-              
-              <div className="bg-card rounded-xl p-6 shadow-md text-center relative">
-                <div className="w-16 h-16 rounded-full bg-primary mx-auto flex items-center justify-center mb-4 shadow-md">
-                  <span className="text-primary-foreground font-bold text-xl">3</span>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Problema Resolvido</h3>
-                <p className="text-muted-foreground">
-                  Após a resolução, você pode verificar o histórico completo da incidência e as ações tomadas.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-primary/5">
+      {/* Hero */}
+      <section className="bg-gradient-to-b from-background to-muted py-16 md:py-24">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Pronto para começar?</h2>
-          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Registre sua primeira incidência agora e experimente como é fácil gerenciar e resolver problemas com nossa plataforma.
+          <h1 className="mb-4 text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">
+            Portal de Incidências
+          </h1>
+          <p className="mx-auto mb-8 max-w-3xl text-xl text-muted-foreground">
+            Gerencie e acompanhe incidências de forma simples e eficiente. 
+            Registre problemas, atribua responsáveis e mantenha todos informados.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a 
-              href="/incidencias/nova" 
-              className="px-8 py-3 bg-primary text-primary-foreground rounded-md font-medium shadow-lg hover:bg-primary/90 transition-all"
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link 
+              href="/registro" 
+              className="rounded-md bg-primary px-6 py-3 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
-              Registrar Primeira Incidência
-            </a>
-            <a 
-              href="/incidencias" 
-              className="px-8 py-3 bg-secondary text-secondary-foreground rounded-md font-medium shadow hover:bg-secondary/90 transition-all"
+              Começar agora
+            </Link>
+            <Link 
+              href="/login" 
+              className="rounded-md border border-input bg-background px-6 py-3 text-base font-medium transition-colors hover:bg-muted"
             >
-              Explorar Incidências
-            </a>
+              Já tenho uma conta
+            </Link>
           </div>
-          <div className="mt-8">
-            <p className="text-muted-foreground mb-4">
-              Novo por aqui? Crie uma conta para acessar todos os recursos
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <a 
-                href="/login" 
-                className="px-8 py-3 border border-primary text-primary rounded-md font-medium hover:bg-primary/5 transition-all"
-              >
-                Fazer Login
-              </a>
-              <a 
-                href="/registro" 
-                className="px-8 py-3 bg-blue-600 text-white rounded-md font-medium shadow hover:bg-blue-700 transition-all"
-              >
-                Criar Conta
-              </a>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="mb-12 text-center text-3xl font-bold">Funcionalidades</h2>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="rounded-lg bg-card p-6 shadow-md">
+              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+              </div>
+              <h3 className="mb-2 text-xl font-bold">Registro de Incidências</h3>
+              <p className="text-muted-foreground">
+                Registre incidências com informações detalhadas, incluindo descrição, 
+                prioridade e categoria.
+              </p>
+            </div>
+            <div className="rounded-lg bg-card p-6 shadow-md">
+              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                  <line x1="3" x2="21" y1="9" y2="9"></line>
+                  <line x1="9" x2="9" y1="21" y2="9"></line>
+                </svg>
+              </div>
+              <h3 className="mb-2 text-xl font-bold">Acompanhamento</h3>
+              <p className="text-muted-foreground">
+                Acompanhe o progresso das incidências com atualizações em tempo real
+                sobre seu estado e resolução.
+              </p>
+            </div>
+            <div className="rounded-lg bg-card p-6 shadow-md">
+              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </div>
+              <h3 className="mb-2 text-xl font-bold">Estatísticas</h3>
+              <p className="text-muted-foreground">
+                Visualize dados estatísticos sobre as incidências através de um 
+                dashboard intuitivo e informativo.
+              </p>
             </div>
           </div>
         </div>
       </section>
+
+      {/* CTA */}
+      <section className="bg-muted py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="mb-4 text-3xl font-bold">Pronto para começar?</h2>
+          <p className="mx-auto mb-8 max-w-2xl text-muted-foreground">
+            Crie sua conta agora e comece a gerenciar suas incidências de forma eficiente.
+          </p>
+          <Link 
+            href="/registro" 
+            className="rounded-md bg-primary px-6 py-3 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            Criar conta gratuita
+          </Link>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="mt-auto border-t py-8">
+        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+          <p>© 2023 Portal de Incidências. Todos os direitos reservados.</p>
+        </div>
+      </footer>
     </div>
   );
 } 
