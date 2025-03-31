@@ -40,36 +40,36 @@ export default async function RootLayout({
     <html lang="pt">
       <head />
       <body className={inter.className}>
-        <SessionProvider session={session}>
-          {session && <NavMenu />}
-          <Providers>
+        <Providers>
+          <SessionProvider session={session}>
+            {session && <NavMenu />}
             <div className="flex flex-col min-h-screen">
               <main className="flex-grow">
                 {children}
               </main>
               <Footer />
             </div>
-          </Providers>
-          <Script
-            id="register-sw"
-            dangerouslySetInnerHTML={{
-              __html: `
-                if ('serviceWorker' in navigator) {
-                  window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('/service-worker.js').then(
-                      function(registration) {
-                        console.log('Service Worker registration successful with scope: ', registration.scope);
-                      },
-                      function(err) {
-                        console.log('Service Worker registration failed: ', err);
-                      }
-                    );
-                  });
-                }
-              `,
-            }}
-          />
-        </SessionProvider>
+            <Script
+              id="register-sw"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  if ('serviceWorker' in navigator) {
+                    window.addEventListener('load', function() {
+                      navigator.serviceWorker.register('/service-worker.js').then(
+                        function(registration) {
+                          console.log('Service Worker registration successful with scope: ', registration.scope);
+                        },
+                        function(err) {
+                          console.log('Service Worker registration failed: ', err);
+                        }
+                      );
+                    });
+                  }
+                `,
+              }}
+            />
+          </SessionProvider>
+        </Providers>
       </body>
     </html>
   );
