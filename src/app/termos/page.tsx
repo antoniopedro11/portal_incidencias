@@ -73,7 +73,7 @@ export default function TermosPage() {
           </p>
           
           <p className="mt-10 text-sm text-muted-foreground">
-            Última atualização: 15 de julho de 2023
+            Última atualização: 15 de janeiro de 2025
           </p>
         </div>
       </div>

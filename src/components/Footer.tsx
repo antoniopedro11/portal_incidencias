@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row md:justify-between items-center">
           <div className="mb-4 md:mb-0">
             <p className="text-sm text-muted-foreground">
-              © 2023 Portal de Incidências. Todos os direitos reservados.
+              © 2025 Portal de Incidências. Todos os direitos reservados.
             </p>
           </div>
           <div className="flex space-x-6">

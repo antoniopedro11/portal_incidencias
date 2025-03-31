@@ -134,13 +134,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="mt-auto border-t py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>© 2023 Portal de Incidências. Todos os direitos reservados.</p>
-        </div>
-      </footer>
     </div>
   );
 } 
