@@ -1,8 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function NovaIncidenciaPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  
   const [formData, setFormData] = useState({
     titulo: "",
     descricao: "",
@@ -12,6 +17,13 @@ export default function NovaIncidenciaPage() {
 
   const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
+  const [erro, setErro] = useState("");
+
+  // Redirecionar para login se não estiver autenticado
+  if (status === "unauthenticated") {
+    router.push("/login?callbackUrl=/incidencias/nova");
+    return null;
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -21,27 +33,44 @@ export default function NovaIncidenciaPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setEnviando(true);
+    setErro("");
     
-    // Simulando um envio para uma API
-    setTimeout(() => {
-      console.log("Incidência enviada:", formData);
-      setEnviando(false);
+    try {
+      const response = await fetch("/api/incidencias", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          titulo: formData.titulo,
+          descricao: formData.descricao,
+          prioridade: formData.prioridade,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || "Erro ao registrar incidência");
+      }
+      
+      console.log("Incidência registrada:", data);
       setSucesso(true);
       
       // Limpar o formulário após alguns segundos
       setTimeout(() => {
-        setSucesso(false);
-        setFormData({
-          titulo: "",
-          descricao: "",
-          prioridade: "Média",
-          categoria: "Sistema"
-        });
-      }, 3000);
-    }, 1500);
+        router.push("/incidencias");
+      }, 2000);
+    } catch (error) {
+      console.error("Erro ao registrar incidência:", error);
+      setErro(error instanceof Error ? error.message : "Erro ao registrar incidência");
+      setSucesso(false);
+    } finally {
+      setEnviando(false);
+    }
   };
 
   return (
@@ -55,6 +84,14 @@ export default function NovaIncidenciaPage() {
         <div className="bg-green-50 border border-green-200 text-green-800 rounded-lg p-6 mb-6">
           <h3 className="text-lg font-medium">Incidência registrada com sucesso!</h3>
           <p className="mt-2">Sua incidência foi registrada e será analisada pela nossa equipe.</p>
+          <p className="mt-2">Redirecionando para a lista de incidências...</p>
+        </div>
+      ) : null}
+      
+      {erro ? (
+        <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-6 mb-6">
+          <h3 className="text-lg font-medium">Erro ao registrar incidência</h3>
+          <p className="mt-2">{erro}</p>
         </div>
       ) : null}
       
@@ -141,7 +178,7 @@ export default function NovaIncidenciaPage() {
               </a>
               <button
                 type="submit"
-                disabled={enviando}
+                disabled={enviando || status !== "authenticated"}
                 className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {enviando ? "Enviando..." : "Registrar Incidência"}
