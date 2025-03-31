@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import Logo from "./Logo";
+import ThemeToggle from "./ThemeToggle";
 
 export default function NavMenu() {
   const pathname = usePathname();
@@ -67,8 +68,11 @@ export default function NavMenu() {
 
           {/* Menu do usuário */}
           <div className="relative flex items-center">
+            {/* Theme Toggle */}
+            <ThemeToggle />
+            
             {/* Botão móvel */}
-            <div className="md:hidden flex items-center mr-4">
+            <div className="md:hidden flex items-center mx-4">
               <button
                 type="button"
                 className="text-muted-foreground hover:text-foreground focus:outline-none"

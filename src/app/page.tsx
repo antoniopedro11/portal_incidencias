@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -27,6 +28,7 @@ export default function Home() {
             <span className="text-lg font-bold">Portal de Incidências</span>
           </div>
           <div className="flex items-center gap-4">
+            <ThemeToggle />
             <Link 
               href="/login" 
               className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
