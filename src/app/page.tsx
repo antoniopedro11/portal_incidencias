@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Logo from "@/components/Logo";
-import ThemeToggle from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -20,31 +20,6 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Header */}
-      <header className="border-b bg-card">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <div className="flex items-center gap-2">
-            <Logo size={32} />
-            <span className="text-lg font-bold">Portal de Incidências</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
-            <Link 
-              href="/login" 
-              className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              Entrar
-            </Link>
-            <Link 
-              href="/registro" 
-              className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
-            >
-              Criar conta
-            </Link>
-          </div>
-        </div>
-      </header>
-
       {/* Hero */}
       <section className="bg-gradient-to-b from-background to-muted py-16 md:py-24">
         <div className="container mx-auto px-4 text-center">
