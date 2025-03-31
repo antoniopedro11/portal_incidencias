@@ -1,8 +1,9 @@
-import OpenAI from 'openai';
+import { OpenAI } from 'openai';
 
 // Inicializa o cliente OpenAI
 const apiKey = process.env.OPENAI_API_KEY;
-const isValidApiKey = apiKey && !apiKey.includes('your-api-key-goes-here');
+// Verifica se a chave é válida - aceita tanto formato padrão (sk-...) quanto formato de projeto (sk-proj-...)
+const isValidApiKey = apiKey && (apiKey.startsWith('sk-') || apiKey.startsWith('sk-proj-')) && !apiKey.includes('your-api-key-goes-here');
 
 // Interface para os resultados de classificação
 export interface ClassificacaoIA {
