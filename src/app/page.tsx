@@ -4,6 +4,22 @@ export default function Home() {
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-primary/10 to-background pt-16 pb-24">
         <div className="container mx-auto px-4">
+          <div className="flex justify-end mb-4">
+            <div className="flex space-x-2">
+              <a 
+                href="/login" 
+                className="px-4 py-2 text-sm font-medium text-primary hover:text-primary/80 transition-all"
+              >
+                Login
+              </a>
+              <a 
+                href="/registro" 
+                className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-md hover:bg-primary/90 transition-all"
+              >
+                Registrar
+              </a>
+            </div>
+          </div>
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 mb-10 md:mb-0">
               <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
@@ -180,6 +196,25 @@ export default function Home() {
             >
               Explorar Incidências
             </a>
+          </div>
+          <div className="mt-8">
+            <p className="text-muted-foreground mb-4">
+              Novo por aqui? Crie uma conta para acessar todos os recursos
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <a 
+                href="/login" 
+                className="px-8 py-3 border border-primary text-primary rounded-md font-medium hover:bg-primary/5 transition-all"
+              >
+                Fazer Login
+              </a>
+              <a 
+                href="/registro" 
+                className="px-8 py-3 bg-blue-600 text-white rounded-md font-medium shadow hover:bg-blue-700 transition-all"
+              >
+                Criar Conta
+              </a>
+            </div>
           </div>
         </div>
       </section>

@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -34,9 +36,29 @@ export default function Navbar() {
             <Link href="/incidencias" className="text-foreground hover:text-primary transition-colors">
               Incidências
             </Link>
-            <Link href="/incidencias/nova" className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
-              Nova Incidência
-            </Link>
+            
+            {session ? (
+              <>
+                <Link href="/incidencias/nova" className="text-foreground hover:text-primary transition-colors">
+                  Nova Incidência
+                </Link>
+                <button 
+                  onClick={() => signOut()} 
+                  className="text-foreground hover:text-primary transition-colors"
+                >
+                  Sair ({session.user?.name || session.user?.email})
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="text-foreground hover:text-primary transition-colors">
+                  Login
+                </Link>
+                <Link href="/registro" className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
+                  Registrar
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Botão Mobile */}
@@ -75,13 +97,41 @@ export default function Navbar() {
               >
                 Incidências
               </Link>
-              <Link 
-                href="/incidencias/nova"
-                className="mx-4 px-4 py-2 bg-primary text-primary-foreground rounded-md text-center hover:bg-primary/90"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Nova Incidência
-              </Link>
+              
+              {session ? (
+                <>
+                  <Link 
+                    href="/incidencias/nova"
+                    className="px-4 py-2 text-foreground hover:bg-muted rounded-md"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Nova Incidência
+                  </Link>
+                  <button 
+                    onClick={() => signOut()} 
+                    className="px-4 py-2 text-foreground hover:bg-muted rounded-md text-left"
+                  >
+                    Sair ({session.user?.name || session.user?.email})
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link 
+                    href="/login"
+                    className="px-4 py-2 text-foreground hover:bg-muted rounded-md"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                  <Link 
+                    href="/registro"
+                    className="mx-4 px-4 py-2 bg-primary text-primary-foreground rounded-md text-center hover:bg-primary/90"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Registrar
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}
