@@ -56,7 +56,12 @@ export default function AssistenteVirtual() {
       // Verificar se é um erro de chave de API
       if (error instanceof Error && error.message.includes("API")) {
         setError("É necessário configurar uma chave de API válida da OpenAI no arquivo .env.local do projeto para usar o assistente virtual.");
-      } else {
+      } 
+      // Verificar se é um erro de cota excedida
+      else if (error instanceof Error && (error.message.includes("quota") || error.message.includes("exceeded"))) {
+        setError("A cota da API OpenAI foi excedida. Para continuar utilizando o assistente virtual, é necessário adicionar créditos à conta OpenAI associada a esta chave de API.");
+      }
+      else {
         setError(error instanceof Error ? error.message : "Erro ao processar a pergunta");
       }
     } finally {
@@ -121,6 +126,7 @@ export default function AssistenteVirtual() {
                 </div>
                 <div className="mt-6 text-xs text-amber-600 dark:text-amber-400">
                   <p>⚠️ Para usar este recurso, é necessário configurar<br/> uma chave de API válida da OpenAI no arquivo .env.local</p>
+                  <p className="mt-2">⚠️ Verifique também se sua conta tem créditos<br/> suficientes em platform.openai.com/billing</p>
                 </div>
               </div>
             ) : (

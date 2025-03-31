@@ -235,8 +235,10 @@ export default function NovaIncidenciaPage() {
                 className="mt-2 bg-secondary text-secondary-foreground px-4 py-2 text-sm rounded-md hover:bg-secondary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed relative group"
               >
                 {classificandoIA ? "Classificando..." : "Classificar Automaticamente"}
-                <span className="hidden group-hover:block absolute -top-10 left-0 right-0 bg-gray-800 text-white text-xs rounded p-2 z-10">
-                  Requer chave da API OpenAI no arquivo .env.local
+                <span className="hidden group-hover:block absolute -top-20 left-0 right-0 bg-gray-800 text-white text-xs rounded p-2 z-10">
+                  Requer chave da API OpenAI no arquivo .env.local<br/>
+                  Verifique se sua conta tem créditos suficientes em<br/>
+                  platform.openai.com/billing
                 </span>
               </button>
             </div>
