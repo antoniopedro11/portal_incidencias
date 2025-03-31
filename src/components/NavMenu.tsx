@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import Logo from "./Logo";
 
 export default function NavMenu() {
   const pathname = usePathname();
@@ -28,13 +28,7 @@ export default function NavMenu() {
               href="/" 
               className="flex items-center"
             >
-              <Image 
-                src="/logo.png" 
-                alt="Portal de Incidências" 
-                width={32} 
-                height={32} 
-                className="rounded-md"
-              />
+              <Logo size={32} />
               <span className="ml-2 text-lg font-bold hidden sm:block">Portal de Incidências</span>
             </Link>
             <div className="ml-10 hidden md:flex space-x-2">

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import Logo from "@/components/Logo";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -23,13 +23,7 @@ export default function Home() {
       <header className="border-b bg-card">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <Image 
-              src="/logo.png" 
-              alt="Portal de Incidências" 
-              width={32} 
-              height={32} 
-              className="rounded-md"
-            />
+            <Logo size={32} />
             <span className="text-lg font-bold">Portal de Incidências</span>
           </div>
           <div className="flex items-center gap-4">
