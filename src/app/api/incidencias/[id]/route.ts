@@ -15,6 +15,19 @@ export async function GET(
 
     const { id } = params;
 
+    // Obter o usuário atual
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Usuário não encontrado' },
+        { status: 404 }
+      );
+    }
+
+    // Buscar a incidência
     const incidencia = await prisma.incidencia.findUnique({
       where: { id },
       include: {
@@ -32,6 +45,17 @@ export async function GET(
       return NextResponse.json(
         { error: 'Incidência não encontrada' },
         { status: 404 }
+      );
+    }
+
+    // Verificar permissões: apenas o criador da incidência ou administradores podem vê-la
+    const isAdmin = user.role === "ADMIN" || user.role === "admin";
+    const isCreator = incidencia.criadorId === user.id;
+
+    if (!isAdmin && !isCreator) {
+      return NextResponse.json(
+        { error: 'Acesso negado: você não tem permissão para ver esta incidência' },
+        { status: 403 }
       );
     }
 

@@ -37,6 +37,14 @@ export async function GET(request: NextRequest) {
       whereClause.prioridade = prioridade;
     }
 
+    // Verificar se é administrador
+    const isAdmin = user.role === "ADMIN" || user.role === "admin";
+    
+    // Se não for admin, mostrar apenas incidências do próprio usuário
+    if (!isAdmin) {
+      whereClause.criadorId = user.id;
+    }
+
     // Buscar incidências
     const incidencias = await prisma.incidencia.findMany({
       where: whereClause,

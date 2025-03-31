@@ -28,6 +28,7 @@ export default function IncidenciasPage() {
   const [incidencias, setIncidencias] = useState<Incidencia[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
+  const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "admin";
 
   // Redirecionar para login se não estiver autenticado
   useEffect(() => {
@@ -94,7 +95,14 @@ export default function IncidenciasPage() {
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Lista de Incidências</h2>
+        <div>
+          <h2 className="text-2xl font-bold">Lista de Incidências</h2>
+          <p className="text-muted-foreground text-sm mt-1">
+            {isAdmin 
+              ? "Como administrador, você está vendo todas as incidências do sistema." 
+              : "Você está vendo apenas as suas incidências."}
+          </p>
+        </div>
         <Link
           href="/incidencias/nova"
           className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
@@ -131,6 +139,11 @@ export default function IncidenciasPage() {
                   <tr key={incidencia.id} className="hover:bg-muted/50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium">{incidencia.titulo}</div>
+                      {isAdmin && (
+                        <div className="text-xs text-muted-foreground mt-1">
+                          Por: {incidencia.criador.name || incidencia.criador.email}
+                        </div>
+                      )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
