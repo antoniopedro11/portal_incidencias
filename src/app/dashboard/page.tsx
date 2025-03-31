@@ -222,10 +222,10 @@ export default function Dashboard() {
 
   return (
     <div className="container mx-auto py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground mt-2">
-          Visão geral das incidências do sistema
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold">Visão Geral</h2>
+        <p className="text-muted-foreground text-sm mt-1">
+          Estatísticas e resumo das incidências
         </p>
       </div>
 

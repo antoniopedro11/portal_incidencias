@@ -1,17 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function Login() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { status } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Pegar o callbackUrl dos parâmetros de busca
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+  
+  // Redirecionar para callbackUrl se já estiver autenticado
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push(callbackUrl);
+    }
+  }, [status, router, callbackUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,12 +45,10 @@ export default function Login() {
         return;
       }
 
-      router.push("/");
-      router.refresh();
+      // O useEffect vai redirecionar quando o status mudar para "authenticated"
     } catch (error) {
       console.error("Erro durante login:", error);
       setError(`Ocorreu um erro ao fazer login: ${error instanceof Error ? error.message : String(error)}`);
-    } finally {
       setIsLoading(false);
     }
   };

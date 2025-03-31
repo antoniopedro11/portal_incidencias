@@ -75,9 +75,9 @@ export default function NovaIncidenciaPage() {
 
   return (
     <div className="container mx-auto py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Registrar Nova Incidência</h1>
-        <p className="text-muted-foreground mt-2">Preencha o formulário abaixo com os detalhes da incidência</p>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold">Nova Incidência</h2>
+        <p className="text-muted-foreground text-sm mt-1">Preencha o formulário abaixo com os detalhes da incidência</p>
       </div>
       
       {sucesso ? (
