@@ -32,6 +32,9 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
   const [novoEstado, setNovoEstado] = useState("");
   const [mensagemErro, setMensagemErro] = useState("");
   const [atualizadoComSucesso, setAtualizadoComSucesso] = useState(false);
+  const [comentario, setComentario] = useState("");
+  const [comentarios, setComentarios] = useState<any[]>([]);
+  const [carregandoComentarios, setCarregandoComentarios] = useState(false);
   
   // @ts-ignore - Corrigindo o problema de tipagem
   const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "admin";
@@ -71,6 +74,58 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
     buscarIncidencia();
   }, [status, params.id]);
 
+  // Buscar comentários da incidência
+  useEffect(() => {
+    const buscarComentarios = async () => {
+      if (status !== "authenticated" || !incidencia) return;
+      
+      try {
+        setCarregandoComentarios(true);
+        const response = await fetch(`/api/incidencias/${params.id}/comentarios`);
+        
+        if (!response.ok) {
+          throw new Error("Falha ao buscar comentários");
+        }
+        
+        const data = await response.json();
+        setComentarios(data);
+      } catch (error) {
+        console.error("Erro ao buscar comentários:", error);
+      } finally {
+        setCarregandoComentarios(false);
+      }
+    };
+    
+    buscarComentarios();
+  }, [status, params.id, incidencia]);
+
+  // Adicionar comentário
+  const adicionarComentario = async () => {
+    if (!incidencia || !comentario.trim()) return;
+    
+    try {
+      const response = await fetch(`/api/incidencias/${params.id}/comentarios`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          texto: comentario,
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error("Falha ao adicionar comentário");
+      }
+      
+      const novoComentario = await response.json();
+      setComentarios([...comentarios, novoComentario]);
+      setComentario("");
+    } catch (error) {
+      console.error("Erro ao adicionar comentário:", error);
+    }
+  };
+
   // Atualizar estado da incidência
   const atualizarEstado = async () => {
     if (!incidencia || novoEstado === incidencia.estado) return;
@@ -87,6 +142,7 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
         },
         body: JSON.stringify({
           estado: novoEstado,
+          comentario: comentario.trim() ? comentario : undefined,
         }),
       });
       
@@ -102,6 +158,17 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
         estado: novoEstado,
         updatedAt: new Date().toISOString()
       });
+      
+      // Se houver comentário, adicionar à lista
+      if (comentario.trim()) {
+        // Recarregar comentários
+        const comentariosResponse = await fetch(`/api/incidencias/${params.id}/comentarios`);
+        if (comentariosResponse.ok) {
+          const comentariosData = await comentariosResponse.json();
+          setComentarios(comentariosData);
+        }
+        setComentario("");
+      }
       
       // Mostrar mensagem de sucesso
       setAtualizadoComSucesso(true);
@@ -242,6 +309,71 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
               </div>
             </div>
           </div>
+
+          {/* Comentários */}
+          <div className="bg-card rounded-lg shadow p-6">
+            <h2 className="text-lg font-medium mb-4">Comentários</h2>
+            
+            {carregandoComentarios ? (
+              <div className="flex justify-center items-center h-20">
+                <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-primary"></div>
+              </div>
+            ) : comentarios.length > 0 ? (
+              <div className="space-y-4">
+                {comentarios.map((comentario) => (
+                  <div key={comentario.id} className="border-b pb-4 last:border-b-0 last:pb-0">
+                    <div className="flex items-start">
+                      <div className="bg-primary/10 rounded-full h-8 w-8 flex items-center justify-center mr-3">
+                        {comentario.autor.name ? comentario.autor.name[0].toUpperCase() : 'U'}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="font-medium text-sm">
+                            {comentario.autor.name || comentario.autor.email}
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(comentario.createdAt).toLocaleString('pt-BR', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">{comentario.texto}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-muted-foreground py-4">
+                Nenhum comentário ainda. Seja o primeiro a comentar!
+              </p>
+            )}
+            
+            <div className="mt-4">
+              <div className="relative">
+                <textarea
+                  value={comentario}
+                  onChange={(e) => setComentario(e.target.value)}
+                  placeholder="Adicione um comentário..."
+                  className="w-full p-3 border border-input rounded-md min-h-[80px] resize-none bg-background"
+                />
+                <button
+                  onClick={adicionarComentario}
+                  disabled={!comentario.trim()}
+                  className="absolute bottom-3 right-3 bg-primary text-primary-foreground p-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 2L11 13"></path>
+                    <path d="m22 2-7 20-4-9-9-4 20-7z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Painel lateral */}
@@ -274,6 +406,19 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
                   <option value="Em análise">Em análise</option>
                   <option value="Resolvida">Resolvida</option>
                 </select>
+                
+                <div className="mt-3">
+                  <label htmlFor="comentario-estado" className="block text-sm font-medium mb-2">
+                    Adicionar Comentário (opcional)
+                  </label>
+                  <textarea
+                    id="comentario-estado"
+                    value={comentario}
+                    onChange={(e) => setComentario(e.target.value)}
+                    placeholder="Explique a razão da mudança de estado..."
+                    className="w-full rounded-md border border-input bg-background px-4 py-2 min-h-[80px] resize-none"
+                  ></textarea>
+                </div>
                 
                 {mensagemErro && (
                   <p className="mt-2 text-sm text-red-600">{mensagemErro}</p>

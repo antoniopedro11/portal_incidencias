@@ -82,7 +82,7 @@ export async function PATCH(
 
     const { id } = params;
     const data = await request.json();
-    const { titulo, descricao, estado, prioridade } = data;
+    const { titulo, descricao, estado, prioridade, comentario } = data;
 
     // Verificar se a incidência existe
     const incidencia = await prisma.incidencia.findUnique({
@@ -137,6 +137,21 @@ export async function PATCH(
       where: { id },
       data: updateData,
     });
+
+    // Adicionar comentário se fornecido
+    if (comentario && comentario.trim() !== '') {
+      try {
+        await prisma.comentario.create({
+          data: {
+            texto: comentario,
+            incidenciaId: id,
+            autorId: user.id,
+          }
+        });
+      } catch (commentError) {
+        console.error('Erro ao adicionar comentário:', commentError);
+      }
+    }
 
     // Criar notificação se o estado foi alterado
     if (estado && estado !== incidencia.estado) {
