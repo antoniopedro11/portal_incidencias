@@ -1,19 +1,19 @@
 # Portal de Incidências
 
-Um sistema moderno e eficiente para registro e acompanhamento de incidências, desenvolvido com Next.js, TypeScript e Tailwind CSS.
+Um sistema moderno e eficiente para registo e acompanhamento de incidências, desenvolvido com Next.js, TypeScript e Tailwind CSS.
 
 ## Funcionalidades
 
-- ✅ Autenticação completa de usuários (registro, login, controle de sessão)
-- ✅ Registro de novas incidências
-- ✅ Visualização de incidências cadastradas
+- ✅ Autenticação completa de utilizadores (registo, login, controlo de sessão)
+- ✅ Registo de novas incidências
+- ✅ Visualização de incidências registadas
 - ✅ Detalhamento de incidências
 - ✅ Comentários em incidências
 - ✅ Histórico de alterações
 - ✅ Interface responsiva
 - ✅ Design moderno com Tailwind CSS
-- ✅ Modo claro/escuro conforme preferência do usuário
-- ✅ Progressive Web App (PWA) para uso offline e instalação
+- ✅ Modo claro/escuro conforme preferência do utilizador
+- ✅ Progressive Web App (PWA) para utilização offline e instalação
 - ✅ **Classificação Automática de Incidências com IA**
 - ✅ **Assistente Virtual alimentado por Inteligência Artificial**
 
@@ -23,14 +23,14 @@ Um sistema moderno e eficiente para registro e acompanhamento de incidências, d
 - [TypeScript](https://www.typescriptlang.org/) - Tipagem estática
 - [Tailwind CSS](https://tailwindcss.com/) - Framework CSS utilitário
 - [NextAuth.js](https://next-auth.js.org/) - Autenticação para Next.js
-- [React Hook Form](https://react-hook-form.com/) - Gerenciamento de formulários
+- [React Hook Form](https://react-hook-form.com/) - Gestão de formulários
 - [Zod](https://github.com/colinhacks/zod) - Validação de esquemas
 - [Lucide React](https://lucide.dev/) - Ícones bonitos e consistentes
 - [OpenAI API](https://openai.com/blog/openai-api) - Integração com IA para classificação e assistência
 
 ## Pré-requisitos
 
-Antes de começar, verifique se você tem o seguinte instalado em seu sistema:
+Antes de começar, verifique se tem o seguinte instalado no seu sistema:
 
 - Node.js (versão 18.x ou superior)
 - npm (versão 9.x ou superior) ou yarn (versão 1.22.x ou superior)
@@ -55,7 +55,7 @@ yarn install
 
 3. **Configure as variáveis de ambiente:**
 
-Crie um arquivo `.env.local` na raiz do projeto e adicione:
+Crie um ficheiro `.env.local` na raiz do projeto e adicione:
 
 ```
 # Prisma
@@ -77,9 +77,9 @@ npm run dev
 yarn dev
 ```
 
-5. **Acesse a aplicação:**
+5. **Aceda à aplicação:**
 
-Abra seu navegador e acesse [http://localhost:3000](http://localhost:3000).
+Abra o seu navegador e aceda a [http://localhost:3000](http://localhost:3000).
 
 ## Recursos de Inteligência Artificial
 
@@ -95,16 +95,16 @@ Ao criar uma nova incidência, o sistema pode analisar automaticamente o título
 - **Palavras-chave** relacionadas ao problema
 - **Departamento** mais indicado para lidar com a questão
 
-Este recurso ajuda a padronizar o registro de incidências e direcionar os problemas de forma eficiente para as equipes corretas.
+Este recurso ajuda a padronizar o registo de incidências e direcionar os problemas de forma eficiente para as equipas corretas.
 
 ### Assistente Virtual
 
 Um chatbot inteligente disponível em todas as páginas do portal que:
 
-- Responde perguntas sobre como usar o sistema
+- Responde a perguntas sobre como utilizar o sistema
 - Auxilia na compreensão dos estados e prioridades das incidências
-- Fornece orientações sobre boas práticas de registro de problemas
-- Ajuda usuários a encontrar recursos e funcionalidades
+- Fornece orientações sobre boas práticas de registo de problemas
+- Ajuda utilizadores a encontrar recursos e funcionalidades
 
 O assistente é acessível através de um ícone flutuante no canto inferior direito da interface.
 
@@ -112,28 +112,28 @@ O assistente é acessível através de um ícone flutuante no canto inferior dir
 
 O portal conta com um sistema completo de autenticação:
 
-- Registro de novos usuários
-- Login com email e senha
-- Proteção de rotas para usuários autenticados
-- Gerenciamento de sessões
+- Registo de novos utilizadores
+- Login com email e palavra-passe
+- Proteção de rotas para utilizadores autenticados
+- Gestão de sessões
 - Logout seguro
 - Interface intuitiva para testes de autenticação
 
 ## Páginas Principais
 
 - **Home** (`/`): Apresentação do portal com recursos e fluxo de trabalho
-- **Login** (`/login`): Autenticação de usuários existentes
-- **Registro** (`/registro`): Criação de novas contas
-- **Teste de Autenticação** (`/test`): Verificação do status de autenticação
+- **Login** (`/login`): Autenticação de utilizadores existentes
+- **Registo** (`/registro`): Criação de novas contas
+- **Teste de Autenticação** (`/test`): Verificação do estado de autenticação
 - **Incidências** (`/incidencias`): Listagem de todas as incidências
-- **Nova Incidência** (`/incidencias/nova`): Formulário para registrar novas incidências com classificação automática
+- **Nova Incidência** (`/incidencias/nova`): Formulário para registar novas incidências com classificação automática
 - **Detalhes da Incidência** (`/incidencias/[id]`): Visualização completa de uma incidência
 
 ## Modo Claro/Escuro
 
 O portal suporta alternância entre os modos claro e escuro:
 
-- Detecção automática da preferência do sistema do usuário
+- Deteção automática da preferência do sistema do utilizador
 - Botão de alternância no cabeçalho para troca rápida
 - Persistência da preferência usando localStorage
 - Design adaptativo que se ajusta a ambos os modos
@@ -142,11 +142,11 @@ O portal suporta alternância entre os modos claro e escuro:
 
 O portal funciona como um Progressive Web App, oferecendo:
 
-- Instalação como aplicativo nativo em dispositivos móveis e desktop
+- Instalação como aplicação nativa em dispositivos móveis e desktop
 - Funcionalidade offline básica com página de fallback
 - Cache inteligente para recursos importantes
-- Carregamento rápido mesmo em conexões lentas
-- Sincronização automática quando a conexão é restabelecida
+- Carregamento rápido mesmo em ligações lentas
+- Sincronização automática quando a ligação é restabelecida
 
 ## Estrutura do Projeto
 
@@ -160,7 +160,7 @@ portal-incidencias/
 │   │   │   └── ...         # Outros endpoints
 │   │   ├── incidencias/    # Rotas de incidências
 │   │   ├── login/          # Página de login
-│   │   ├── registro/       # Página de registro
+│   │   ├── registro/       # Página de registo
 │   │   ├── test/           # Página de teste de autenticação
 │   │   ├── globals.css     # Estilos globais
 │   │   ├── layout.tsx      # Layout principal da aplicação
@@ -175,7 +175,7 @@ portal-incidencias/
 │       ├── auth.ts         # Configuração de autenticação
 │       ├── openai.ts       # Funções para integração com a OpenAI
 │       └── ...             # Outros utilitários
-├── public/                 # Arquivos estáticos
+├── public/                 # Ficheiros estáticos
 │   ├── icons/              # Ícones para PWA
 │   ├── manifest.json       # Manifesto para PWA
 │   ├── sw.js               # Service Worker para funcionalidade offline
@@ -193,7 +193,7 @@ O Portal de Incidências apresenta uma interface moderna e intuitiva com:
 
 - Design responsivo para desktop e dispositivos móveis
 - Elementos visuais consistentes em todas as páginas
-- Feedback visual para todas as ações do usuário
+- Feedback visual para todas as ações do utilizador
 - Validação de formulários com mensagens de erro claras
 - Indicadores de carregamento para processos assíncronos
 - Paleta de cores profissional e agradável
@@ -201,11 +201,11 @@ O Portal de Incidências apresenta uma interface moderna e intuitiva com:
 
 ## Licença
 
-Este projeto está licenciado sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+Este projeto está licenciado sob a licença MIT. Veja o ficheiro LICENSE para mais detalhes.
 
-## Contato
+## Contacto
 
-Se você tiver alguma dúvida ou sugestão, fique à vontade para entrar em contato:
+Se tiver alguma dúvida ou sugestão, não hesite em contactar:
 
 - Email: seu-email@exemplo.com
 - Website: [seu-website.com](https://seu-website.com)
