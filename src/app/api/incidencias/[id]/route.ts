@@ -138,6 +138,25 @@ export async function PATCH(
       data: updateData,
     });
 
+    // Criar notificação se o estado foi alterado
+    if (estado && estado !== incidencia.estado) {
+      try {
+        // Criar notificação para o criador da incidência
+        await prisma.notificacao.create({
+          data: {
+            tipo: 'sistema',
+            titulo: 'Alteração de Estado da Incidência',
+            conteudo: `O estado da sua incidência "${incidencia.titulo}" foi alterado para "${estado}".`,
+            usuarioId: incidencia.criadorId,
+            incidenciaId: incidencia.id
+          }
+        });
+      } catch (notificationError) {
+        // Apenas log do erro, não impede a atualização da incidência
+        console.error('Erro ao criar notificação:', notificationError);
+      }
+    }
+
     return NextResponse.json(incidenciaAtualizada);
   } catch (error) {
     console.error('Erro ao atualizar incidência:', error);

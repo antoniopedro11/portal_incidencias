@@ -8,6 +8,7 @@ import Logo from "./Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { UserNav } from "@/components/UserNav";
+import { NotificacaoDropdown } from "@/components/NotificacaoDropdown";
 
 export function NavMenu() {
   const pathname = usePathname();
@@ -63,7 +64,10 @@ export function NavMenu() {
         <div className="ml-auto flex items-center space-x-4">
           <ThemeToggle />
           {session ? (
-            <UserNav />
+            <>
+              <NotificacaoDropdown />
+              <UserNav />
+            </>
           ) : (
             <div className="flex items-center gap-2">
               <Link href="/login" passHref>
