@@ -31,6 +31,7 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
   const [atualizando, setAtualizando] = useState(false);
   const [novoEstado, setNovoEstado] = useState("");
   const [mensagemErro, setMensagemErro] = useState("");
+  const [atualizadoComSucesso, setAtualizadoComSucesso] = useState(false);
   
   // @ts-ignore - Corrigindo o problema de tipagem
   const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "admin";
@@ -77,6 +78,8 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
     try {
       setAtualizando(true);
       setMensagemErro("");
+      setAtualizadoComSucesso(false);
+      
       const response = await fetch(`/api/incidencias/${params.id}`, {
         method: "PATCH",
         headers: {
@@ -87,13 +90,26 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
         }),
       });
       
+      const data = await response.json();
+      
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Falha ao atualizar incidência");
+        throw new Error(data.error || "Falha ao atualizar incidência");
       }
       
-      const data = await response.json();
-      setIncidencia(data);
+      // Atualizar o estado local da incidência
+      setIncidencia({
+        ...incidencia,
+        estado: novoEstado,
+        updatedAt: new Date().toISOString()
+      });
+      
+      // Mostrar mensagem de sucesso
+      setAtualizadoComSucesso(true);
+      
+      // Recarregar a página após um pequeno delay
+      setTimeout(() => {
+        router.refresh();
+      }, 2000);
       
     } catch (error) {
       console.error("Erro ao atualizar incidência:", error);
@@ -261,6 +277,14 @@ export default function IncidenciaDetalhe({ params }: { params: { id: string } }
                 
                 {mensagemErro && (
                   <p className="mt-2 text-sm text-red-600">{mensagemErro}</p>
+                )}
+                
+                {atualizadoComSucesso && (
+                  <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded-md">
+                    <p className="text-sm text-green-800">
+                      Estado atualizado com sucesso!
+                    </p>
+                  </div>
                 )}
                 
                 <button
